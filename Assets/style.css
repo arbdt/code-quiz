@@ -1,0 +1,15 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    background-color: blue;
+}
+
+button {
+    background-color: darkgrey;
+    color: black;
+}
+
+button :active {
+    background-color: cyan;
+    color: darkblue;
+}
