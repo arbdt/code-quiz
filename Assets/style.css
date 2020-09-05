@@ -1,15 +1,33 @@
 body {
     font-family: 'Courier New', Courier, monospace;
     color: white;
-    background-color: blue;
+    background-color: teal;
 }
 
-button {
+button, input {
     background-color: darkgrey;
     color: black;
 }
 
-button :active {
+button :active, input :active {
     background-color: cyan;
     color: darkblue;
+}
+
+.card {
+    border-color: darkgray;
+    border-width: 8px;
+    border-style: solid;
+}
+
+.card-header {
+    background-color: darkblue;
+    color: white;
+    border-bottom-color:  darkgray;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.card-body {
+    background-color: black;
+    color: white;
 }
