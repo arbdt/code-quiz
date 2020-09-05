@@ -31,3 +31,16 @@ button :active, input :active {
     background-color: black;
     color: white;
 }
+
+#answerArea li {
+    list-style: none;
+    padding: 0.5em 1em 0.5em 1em;
+    margin: 0.5em 1em;
+    background-color: darkgray;
+}
+#answerArea li a:hover {
+    background-color: cyan;
+    color: darkblue;
+    display: block;
+    text-decoration: none;
+}
