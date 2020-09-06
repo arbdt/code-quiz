@@ -17,59 +17,72 @@ var q4_answers = ["Disco", "Tent", "C", "D"];
 var q5_answers = ["E", "F", "G", "H"];
 
 // other variables
-var playerStorage = window.localStorage;
-var timeLeft = 75;
-var interval;
-var qnCorrect = false;
-var isPlaying = true;
-
-// reset to defaults
-function restartQuiz(){
-    clearInterval(); // clear any timers
-    quizQuestion.textContent = "When you're ready to begin, click the start button."
-    startButton.hidden = "false";
-}
-//restartQuiz();
+var playerStorage = window.localStorage; // storage of scores
+var timeLeft = 75; // timer maximum and remaining
+var interval; // refresh each second
+var qnCorrect = false; // for scoring of each question
+var isPlaying = true; // is quiz running
+var numQuestion = 1; // track current question
 
 // start quiz on button
-startButton.addEventListener("click", playQuiz());
+startButton.addEventListener("click", playQuiz);
 
 function playQuiz(){
+    event.preventDefault(); //prevent button from refreshing form and page
+    console.log("now playing");
     isPlaying = true; // set playing status true
-    timerDisplay.textContent = timeLeft;
-    //startButton.hidden = true;
-    for (var i = 0; i < quizQnArray.length; i++){
-        poseQuestion(i);
-    }
-
+    timeLeft= 75; //set max time remaining to begin
+    timerDisplay.textContent = timeLeft; // display time remaining
+    interval = setInterval(function(){ // count each second
+        timeLeft -= 1;
+        timerDisplay.textContent = timeLeft; // display decremented time
+        console.log(timeLeft);
+        if (isPlaying == false || timeLeft == 0){ // stop timer if quiz finished or ran out of time
+           clearInterval(interval); // clear any timers
+           console.log("time stopped");
+        }
+    }, 1000);
+    startButton.style="display:none"; // hide start button
+    //pose first question
+    poseQuestion(numQuestion);
 }
 
-function poseQuestion(qnNumber){
-    quizQuestion.textContent = quizQnArray[qnNumber];
+function poseQuestion(qnNumber){ //to show question and answers
+    console.log("printing qns");
+    quizQuestion.textContent = quizQnArray[qnNumber-1];
     var answerPool;
-    if (qnNumber == 0){
+    if (qnNumber == 1){
         answerPool = q1_answers;
     }
-    else if (qnNumber == 1){
+    else if (qnNumber == 2){
         answerPool = q2_answers;
     }
-    else if (qnNumber == 2){
+    else if (qnNumber == 3){
         answerPool = q3_answers;
     }
-    else if (qnNumber == 3){
+    else if (qnNumber == 4){
         answerPool = q4_answers;
     }
-    else if (qnNumber == 4){
+    else if (qnNumber == 5){
         answerPool = q5_answers;
     }
-    for (var i =0; i < answerPool.length; i++){
-        var answerOption = document.createElement("a");
+    for (var i =0; i < answerPool.length; i++){ //for each answer in set
+        var answerOption = document.createElement("a"); // create an answer element
         answerOption.setAttribute("id", `option${i}`);
+        answerOption.setAttribute("class", "answerLink");
         answerOption.setAttribute("href", "#");
         answerOption.textContent = answerPool[i];
-        quizOptions.children[i].appendChild(answerOption);
+        answerOption.style = "display: block";
+        quizOptions.children[i].style = "display: list-item"; // show answer list to user
+        quizOptions.children[i].appendChild(answerOption); // add answers to answer area list
+        console.log(answerOption);
     }
 }
+
+// reset to defaults
+
+
+// high scores
 
 // LOGICAL FLOW: 
 // Start Quiz -> start timer (every 1000ms, timer -= 1 until 0 OR !playing)

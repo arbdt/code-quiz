@@ -12,21 +12,21 @@
         <nav class="navbar">
             <h1 class="navbar-brand">JavaScript Code Quiz</h1>
             <p>Time left: <span id="timerDisplay">0</span> </p> <!-- timer -->
-            <button id="highScoreBtn">High Scores</button> <!-- access and set high scores -->
+            <button id="highScoreBtn" class="btn-lg">High Scores</button> <!-- access and set high scores -->
         </nav>
     </header>
 
     <main class="container"> <!-- main content -->
-        <form id="questionArea" class="card"> <!-- quiz content here -->
+        <form id="questionArea" class="card mt-sm-5"> <!-- quiz content here -->
             <h5 class="card-header" id="questionTitle">Click the Start button to begin the quiz.</h3> <!-- fill in question here -->
             <section class="card-body"> 
-                <button id="startButton" style="margin:auto; display:block">START QUIZ</button>
-                <ul id="answerArea"> <!-- place answer option in here -->
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
+                <button id="startButton" style="margin:auto; display:block" class="btn-lg">START QUIZ</button>
+                <ol id="answerArea"> <!-- place answer option in here -->
+                    <li style="display: none;"></li>
+                    <li style="display: none;"></li>
+                    <li style="display: none;"></li>
+                    <li style="display: none;"></li>
+                </ol>
                 <h5 id="qnResult" class="card-footer"></h5> <!-- if want to display "correct" / "incorrect" -->
             </section>
         </form>

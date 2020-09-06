@@ -4,6 +4,10 @@ body {
     background-color: teal;
 }
 
+.navbar-brand {
+    font-weight: bold;
+}
+/*
 button, input {
     background-color: darkgrey;
     color: black;
@@ -13,7 +17,7 @@ button :active, input :active {
     background-color: cyan;
     color: darkblue;
 }
-
+*/
 .card {
     border-color: darkgray;
     border-width: 8px;
@@ -33,11 +37,19 @@ button :active, input :active {
 }
 
 #answerArea li {
-    list-style: none;
+    list-style: upper-alpha;
     padding: 0.5em 1em 0.5em 1em;
     margin: 0.5em 1em;
-    background-color: darkgray;
+    
 }
+
+#answerArea li a {
+    color: white;
+    display: block;
+    text-decoration: none;
+    padding: 0.5em 1em;
+}
+
 #answerArea li a:hover {
     background-color: cyan;
     color: darkblue;
