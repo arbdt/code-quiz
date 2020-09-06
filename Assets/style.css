@@ -7,17 +7,17 @@ body {
 .navbar-brand {
     font-weight: bold;
 }
-/*
-button, input {
+
+.btn {
     background-color: darkgrey;
     color: black;
 }
 
-button :active, input :active {
+.btn :active {
     background-color: cyan;
     color: darkblue;
 }
-*/
+
 .card {
     border-color: darkgray;
     border-width: 8px;
@@ -38,7 +38,7 @@ button :active, input :active {
 
 #answerArea li {
     list-style: upper-alpha;
-    padding: 0.5em 1em 0.5em 1em;
+    padding: 0.5em 1em;
     margin: 0.5em 1em;
     
 }
@@ -55,4 +55,20 @@ button :active, input :active {
     color: darkblue;
     display: block;
     text-decoration: none;
+}
+
+#scoreCard, #scoreCard .card-body {
+    background-color: darkgrey;
+    color: black;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#scoreCard li {
+    list-style-type: decimal;
+    padding: 0.5em 1em;
+    display: block;
+}
+
+#scoreCard #playerNameText {
+    padding-right: 50%;
 }

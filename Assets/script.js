@@ -3,6 +3,10 @@ var quizQuestion = document.getElementById("questionTitle");
 var quizOptions = document.getElementById("answerArea");
 var timerDisplay = document.getElementById("timerDisplay");
 var startButton = document.getElementById("startButton");
+var showScoresButton = document.getElementById("viewScoreBtn");
+var hideScoresButton = document.getElementById("closeScoresBtn");
+var scoreCard = document.getElementById("scoreCard");
+var gameCard = document.getElementById("questionArea");
 
 // quiz questions and answers
 var quizQnArray = ["Q1: Commonly used data types do not include ...",
@@ -24,6 +28,12 @@ var qnCorrect = false; // for scoring of each question
 var isPlaying = true; // is quiz running
 var numQuestion = 1; // track current question
 
+// user storage
+/*var playerRecord = {
+    playerName: ,
+    playerScore: ,
+};*/
+
 // start quiz on button
 startButton.addEventListener("click", playQuiz);
 
@@ -33,18 +43,31 @@ function playQuiz(){
     isPlaying = true; // set playing status true
     timeLeft= 75; //set max time remaining to begin
     timerDisplay.textContent = timeLeft; // display time remaining
-    interval = setInterval(function(){ // count each second
-        timeLeft -= 1;
-        timerDisplay.textContent = timeLeft; // display decremented time
-        console.log(timeLeft);
-        if (isPlaying == false || timeLeft == 0){ // stop timer if quiz finished or ran out of time
-           clearInterval(interval); // clear any timers
-           console.log("time stopped");
-        }
-    }, 1000);
-    startButton.style="display:none"; // hide start button
-    //pose first question
-    poseQuestion(numQuestion);
+    //while (isPlaying){
+        interval = setInterval(function(){ // count each second
+            timeLeft -= 1;
+            timerDisplay.textContent = timeLeft; // display decremented time
+            console.log(timeLeft);
+            if (timeLeft == 0){ // stop timer if ran out of time
+                clearInterval(interval); // clear any timers
+                console.log("time ended");
+                isPlaying = false; // no longer quizzing
+            }
+            if (!isPlaying){ // stop timer if finished quiz
+                clearInterval(interval); // clear any timers
+                console.log("quiz ended");
+            }
+        }, 1000);
+        startButton.style="display:none"; // hide start button
+        
+        //pose first question
+        poseQuestion(numQuestion);
+    //}
+
+    if (!isPlaying){ //stopped playing quiz
+        // ask user to enter name to save score
+        console.log("finished quiz");
+    }
 }
 
 function poseQuestion(qnNumber){ //to show question and answers
@@ -72,13 +95,17 @@ function poseQuestion(qnNumber){ //to show question and answers
         quizOptions.children[i].firstChild.addEventListener("click",choseAnswer);
         console.log(answerPool[i]);
     }
+    
 }
 
 // answer clicked
 function choseAnswer(){
     var qnAnswered = false;
     var answerChosen = event.currentTarget; //get object being listened to
+    event.preventDefault();
        while (!qnAnswered){
+            document.getElementById("qnResult").textContent = ""; // reset correct/incorrect message
+            
             // correct / incorrect answer logic
             if (numQuestion == 1 && answerChosen.innerText == "Alerts"){ // question 1
                 console.log(answerChosen.innerText);
@@ -153,8 +180,28 @@ function restartQuiz(){
 
 }
 
-
 // high scores
+
+// show high scores pane
+showScoresButton.addEventListener("click", showScoreCard);
+
+function showScoreCard(){
+    event.preventDefault();
+    console.log("show scores");
+    gameCard.style = "display: none;";
+    scoreCard.style="display: flex;";
+}
+
+// hide high scores pane
+hideScoresButton.addEventListener("click", hideScoreCard);
+
+function hideScoreCard(){
+    event.preventDefault();
+    console.log("hide scores");
+    scoreCard.style = "display: none;";
+    gameCard.style = "display: flex;";
+
+}
 
 // LOGICAL FLOW: 
 // Start Quiz -> start timer (every 1000ms, timer -= 1 until 0 OR !playing)
