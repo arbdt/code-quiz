@@ -57,6 +57,10 @@ body {
     text-decoration: none;
 }
 
+#playerNameField {
+    max-width: 50%;
+}
+
 #scoreCard, #scoreCard .card-body {
     background-color: darkgrey;
     color: black;
@@ -69,6 +73,6 @@ body {
     display: block;
 }
 
-#scoreCard #playerNameText {
+#scoreCard .playerNameText {
     padding-right: 50%;
 }

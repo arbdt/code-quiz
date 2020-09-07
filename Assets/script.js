@@ -164,11 +164,14 @@ function choseAnswer(){
                 qnAnswered = true;
             }
         }
+        if (timeLeft < 0){
+            timeLeft = 0;
+        }
         if (qnAnswered && numQuestion < 5){
             numQuestion += 1; // move on to next question
             poseQuestion(numQuestion);
         }
-        else if (timeLeft <= 0 || numQuestion == 5){
+        else if (timeLeft == 0 || numQuestion == 5){
             isPlaying = false;
             clearInterval();
         }
@@ -218,9 +221,20 @@ function showScoreCard(){
     console.log("show scores");
     gameCard.style = "display: none;";
     scoreCard.style="display: flex;";
+    showScoresButton.style.visibility="hidden";
 
-    var recentPlayers = playerStorage.getItem("saved scores");
-    console.log(recentPlayers);
+    for (var i = 0; i < savedScoresList.length; i++){
+        var newScoreEntry = document.createElement("li");
+        document.getElementById("scoreListDisplay").appendChild(newScoreEntry); // create and add new score list item
+        var scoreEntryPlayerName = document.createElement("span");
+        scoreEntryPlayerName.setAttribute("class","playerNameText");
+        scoreEntryPlayerName.textContent = savedScoresList[i].playerName; // set player name to display
+        newScoreEntry.appendChild(scoreEntryPlayerName);
+        var scoreEntryPlayerScore = document.createElement("span");
+        scoreEntryPlayerScore.setAttribute("class","playerScoreText");
+        scoreEntryPlayerScore.textContent = savedScoresList[i].playerScore; // set player score to display
+        newScoreEntry.appendChild(scoreEntryPlayerScore);
+    }
 }
 
 // hide high scores pane
@@ -231,6 +245,7 @@ function hideScoreCard(){
     console.log("hide scores");
     scoreCard.style = "display: none;";
     gameCard.style = "display: flex;";
+    showScoresButton.style.visibility = "visible";
 
 }
 
