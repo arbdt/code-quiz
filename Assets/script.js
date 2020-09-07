@@ -7,6 +7,8 @@ var showScoresButton = document.getElementById("viewScoreBtn");
 var hideScoresButton = document.getElementById("closeScoresBtn");
 var scoreCard = document.getElementById("scoreCard");
 var gameCard = document.getElementById("questionArea");
+var playerNameInput = document.getElementById("playerNameField");
+var saveScoreButton = document.getElementById("saveScoreBtn");
 
 // quiz questions and answers
 var quizQnArray = ["Q1: Commonly used data types do not include ...",
@@ -27,12 +29,7 @@ var interval; // refresh each second
 var qnCorrect = false; // for scoring of each question
 var isPlaying = true; // is quiz running
 var numQuestion = 1; // track current question
-
-// user storage
-/*var playerRecord = {
-    playerName: ,
-    playerScore: ,
-};*/
+var savedScoresList = [];
 
 // start quiz on button
 startButton.addEventListener("click", playQuiz);
@@ -43,6 +40,7 @@ function playQuiz(){
     isPlaying = true; // set playing status true
     timeLeft= 75; //set max time remaining to begin
     timerDisplay.textContent = timeLeft; // display time remaining
+    retrieveScores();
     //while (isPlaying){
         interval = setInterval(function(){ // count each second
             timeLeft -= 1;
@@ -52,10 +50,12 @@ function playQuiz(){
                 clearInterval(interval); // clear any timers
                 console.log("time ended");
                 isPlaying = false; // no longer quizzing
+                endQuiz();
             }
             if (!isPlaying){ // stop timer if finished quiz
                 clearInterval(interval); // clear any timers
                 console.log("quiz ended");
+                endQuiz();
             }
         }, 1000);
         startButton.style="display:none"; // hide start button
@@ -180,7 +180,35 @@ function restartQuiz(){
 
 }
 
-// high scores
+// ending and scoring
+function endQuiz(){
+    quizQuestion.textContent = "Quiz concluded";
+    document.getElementById("qnResult").textContent = "To save your score, enter your name below.";
+    quizOptions.style = "display: none;";
+    playerNameInput.style = "display: inline;";
+    saveScoreButton.style = "display: inline; margin:auto;";
+    saveScoreButton.addEventListener("click",saveScoring);
+}
+
+function retrieveScores(){ //get existing scores from local storage if exists
+    if (playerStorage.getItem("saved scores")){
+        savedScoresList = JSON.parse(playerStorage.getItem("saved scores"));
+        console.log(savedScoresList);    
+    }
+}
+
+function saveScoring() {
+    event.preventDefault();
+
+    // user storage
+    var playerRecord = {
+        playerName: playerNameInput.value.trim(),
+        playerScore: timeLeft,
+    };
+    console.log(playerRecord);
+    savedScoresList.push(playerRecord);
+    playerStorage.setItem("saved scores", JSON.stringify(savedScoresList));
+}
 
 // show high scores pane
 showScoresButton.addEventListener("click", showScoreCard);
@@ -190,6 +218,9 @@ function showScoreCard(){
     console.log("show scores");
     gameCard.style = "display: none;";
     scoreCard.style="display: flex;";
+
+    var recentPlayers = playerStorage.getItem("saved scores");
+    console.log(recentPlayers);
 }
 
 // hide high scores pane
