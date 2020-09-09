@@ -1,14 +1,18 @@
-// link with html elements
-var quizQuestion = document.getElementById("questionTitle");
-var quizOptions = document.getElementById("answerArea");
-var timerDisplay = document.getElementById("timerDisplay");
-var startButton = document.getElementById("startButton");
-var showScoresButton = document.getElementById("viewScoreBtn");
-var hideScoresButton = document.getElementById("closeScoresBtn");
-var scoreCard = document.getElementById("scoreCard");
-var gameCard = document.getElementById("questionArea");
-var playerNameInput = document.getElementById("playerNameField");
-var saveScoreButton = document.getElementById("saveScoreBtn");
+// links to html elements
+var timerDisplay = document.getElementById("timerDisplay"); // the timer display element
+var showScoresButton = document.getElementById("viewScoreBtn"); // button to show score sheet
+
+var gameCard = document.getElementById("questionArea"); // area that holds questions and answers
+var quizQuestion = document.getElementById("questionTitle"); // quiz title area
+var quizOptions = document.getElementById("answerArea"); // area that holds quiz answer options
+
+var startButton = document.getElementById("startButton"); // button to start quiz
+
+var playerNameInput = document.getElementById("playerNameField"); // player name entry field
+var saveScoreButton = document.getElementById("saveScoreBtn"); // button to save player entry
+
+var scoreCard = document.getElementById("scoreCard"); // the score sheet
+var hideScoresButton = document.getElementById("closeScoresBtn"); // button to close score sheet
 
 // quiz questions and answers
 var quizQnArray = ["Q1: Commonly used data types do not include ...",
@@ -29,7 +33,7 @@ var interval; // refresh each second
 var qnCorrect = false; // for scoring of each question
 var isPlaying = true; // is quiz running
 var numQuestion = 1; // track current question
-var savedScoresList = [];
+var savedScoresList = []; // store existing scores
 
 // start quiz on button
 startButton.addEventListener("click", playQuiz);
@@ -48,20 +52,19 @@ function playQuiz(){
             if (timeLeft > 0){ // if still have time to go
                 timeLeft -= 1;
                 timerDisplay.textContent = timeLeft; // display decremented time
-                console.log(timeLeft);
+                console.log(timeLeft); //DEBUGGING: current time left
             }
             else if (timeLeft == 0){ // stop timer if ran out of time
                 clearInterval(interval); // clear any timers
-                console.log("time ended");
+                console.log("time ended"); //DEBUGGING: Ended due to time constraint
                 isPlaying = false; // no longer quizzing
                 endQuiz();
             }
             if (!isPlaying){ // stop timer if finished quiz
                 clearInterval(interval); // clear any timers
-                console.log("quiz ended");
+                console.log("quiz ended"); //DEBUGGING: Ended due to no more questions
                 endQuiz();
             }
-
 
         }, 1000);
         startButton.style="display:none"; // hide start button
@@ -69,42 +72,37 @@ function playQuiz(){
         //pose first question
         poseQuestion(numQuestion);
     //}
-
-    if (!isPlaying){ //stopped playing quiz
-        // ask user to enter name to save score
-        console.log("finished quiz");
-    }
 }
 
 function poseQuestion(qnNumber){ //to show question and answers
     console.log("printing qns");
     quizQuestion.textContent = quizQnArray[qnNumber-1];
     var answerPool;
-    if (qnNumber == 1){
+    if (qnNumber == 1){ // set up Q1
         answerPool = q1_answers;
     }
-    else if (qnNumber == 2){
+    else if (qnNumber == 2){ // set up Q2
         answerPool = q2_answers;
     }
-    else if (qnNumber == 3){
+    else if (qnNumber == 3){ // set up Q3
         answerPool = q3_answers;
     }
-    else if (qnNumber == 4){
+    else if (qnNumber == 4){ // set up Q4
         answerPool = q4_answers;
     }
-    else if (qnNumber == 5){
+    else if (qnNumber == 5){ // set up Q5
         answerPool = q5_answers;
     }
     for (var i =0; i < answerPool.length; i++){ //for each answer in set
         quizOptions.children[i].style = "display: list-item"; // show answer list to user
         quizOptions.children[i].firstChild.textContent = answerPool[i]; // add answers to answer area list
-        quizOptions.children[i].firstChild.addEventListener("click",choseAnswer);
-        console.log(answerPool[i]);
+        quizOptions.children[i].firstChild.addEventListener("click",choseAnswer); // functionality to select answer
+        console.log(answerPool[i]); // DEBUGGING: printing answer options to screen
     }
     
 }
 
-// answer clicked
+// for when answer clicked
 function choseAnswer(){
     var qnAnswered = false;
     var answerChosen = event.currentTarget; //get object being listened to
@@ -170,14 +168,14 @@ function choseAnswer(){
                 qnAnswered = true;
             }
         }
-        if (timeLeft < 0){
+        if (timeLeft < 0){ // try not let time go negative
             timeLeft = 0;
         }
         if (qnAnswered && numQuestion < 5){
             numQuestion += 1; // move on to next question
             poseQuestion(numQuestion);
         }
-        else if (timeLeft == 0 || numQuestion == 5){
+        else if (timeLeft == 0 || numQuestion == 5){ // stop quiz
             isPlaying = false;
         }
 }
@@ -201,7 +199,7 @@ function endQuiz(){
 function retrieveScores(){ //get existing scores from local storage if exists
     if (playerStorage.getItem("saved scores")){
         savedScoresList = JSON.parse(playerStorage.getItem("saved scores"));
-        console.log(savedScoresList);    
+        console.log(savedScoresList); //DEBUGGING: what are existing scores
     }
 }
 
@@ -215,7 +213,7 @@ function saveScoring() { // save current user score
             playerName: nameEntered,
             playerScore: timeLeft,
         };
-        console.log(playerRecord);
+        console.log(playerRecord); //DEBUGGING: show recorded player data
         //save to local storage
         savedScoresList.push(playerRecord);
         playerStorage.setItem("saved scores", JSON.stringify(savedScoresList));
@@ -231,7 +229,7 @@ showScoresButton.addEventListener("click", showScoreCard);
 
 function showScoreCard(){
     event.preventDefault();
-    console.log("show scores");
+    console.log("show scores"); //DEBUGGING: score card should be showing
     gameCard.style = "display: none;";
     scoreCard.style="display: flex;";
     showScoresButton.style.visibility="hidden";
@@ -251,7 +249,7 @@ hideScoresButton.addEventListener("click", hideScoreCard);
 
 function hideScoreCard(){
     event.preventDefault();
-    console.log("hide scores");
+    console.log("hide scores"); //DEBUGGING: score card should be hidden
     scoreCard.style = "display: none;";
     gameCard.style = "display: flex;";
     showScoresButton.style.visibility = "visible";
