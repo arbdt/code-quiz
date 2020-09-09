@@ -34,13 +34,15 @@ var savedScoresList = [];
 // start quiz on button
 startButton.addEventListener("click", playQuiz);
 
+retrieveScores(); // load previous scores
+
 function playQuiz(){
     event.preventDefault(); //prevent button from refreshing form and page
     console.log("now playing");
     isPlaying = true; // set playing status true
     timeLeft= 75; //set max time remaining to begin
     timerDisplay.textContent = timeLeft; // display time remaining
-    retrieveScores();
+
     //while (isPlaying){
         interval = setInterval(function(){ // count each second
             timeLeft -= 1;
@@ -200,17 +202,25 @@ function retrieveScores(){ //get existing scores from local storage if exists
     }
 }
 
-function saveScoring() {
+function saveScoring() { // save current user score
     event.preventDefault();
+    var nameEntered = playerNameInput.value.trim();
+    if (nameEntered != ""){ // ensure name has been entered
 
-    // user storage
-    var playerRecord = {
-        playerName: playerNameInput.value.trim(),
-        playerScore: timeLeft,
-    };
-    console.log(playerRecord);
-    savedScoresList.push(playerRecord);
-    playerStorage.setItem("saved scores", JSON.stringify(savedScoresList));
+        // user storage
+        var playerRecord = {
+            playerName: nameEntered,
+            playerScore: timeLeft,
+        };
+        console.log(playerRecord);
+        //save to local storage
+        savedScoresList.push(playerRecord);
+        playerStorage.setItem("saved scores", JSON.stringify(savedScoresList));
+
+        //once saved, show score card
+        showScoreCard();
+    }
+
 }
 
 // show high scores pane
@@ -224,16 +234,12 @@ function showScoreCard(){
     showScoresButton.style.visibility="hidden";
 
     for (var i = 0; i < savedScoresList.length; i++){
+        var newNameEntry = document.createElement("li");
         var newScoreEntry = document.createElement("li");
-        document.getElementById("scoreListDisplay").appendChild(newScoreEntry); // create and add new score list item
-        var scoreEntryPlayerName = document.createElement("span");
-        scoreEntryPlayerName.setAttribute("class","playerNameText");
-        scoreEntryPlayerName.textContent = savedScoresList[i].playerName; // set player name to display
-        newScoreEntry.appendChild(scoreEntryPlayerName);
-        var scoreEntryPlayerScore = document.createElement("span");
-        scoreEntryPlayerScore.setAttribute("class","playerScoreText");
-        scoreEntryPlayerScore.textContent = savedScoresList[i].playerScore; // set player score to display
-        newScoreEntry.appendChild(scoreEntryPlayerScore);
+        document.getElementById("playerNameListDisplay").appendChild(newNameEntry); // create and add new name list item
+        newNameEntry.textContent = savedScoresList[i].playerName; // set player name to display
+        document.getElementById("playerScoreListDisplay").appendChild(newScoreEntry); // create and add new score list item       
+        newScoreEntry.textContent = savedScoresList[i].playerScore; // set player score to display
     }
 }
 
@@ -246,7 +252,10 @@ function hideScoreCard(){
     scoreCard.style = "display: none;";
     gameCard.style = "display: flex;";
     showScoresButton.style.visibility = "visible";
-
+    while (document.getElementById("playerNameListDisplay").children.length > 1){
+        document.getElementById("playerNameListDisplay").lastElementChild.remove();
+        document.getElementById("playerScoreListDisplay").lastElementChild.remove();
+    }
 }
 
 // LOGICAL FLOW: 

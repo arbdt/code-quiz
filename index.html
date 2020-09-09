@@ -43,9 +43,14 @@
             <div class="card my-sm-5" id="scoreCard" style="display:none;">
                 <h5 class="card-header">Saved Scores</h5>
                 <div class="card-body">
-                    <ol id="scoreListDisplay">
-                        <li><span class="playerNameText">Player Name:</span><span class="playerScoreText">Score:</span></li>
+                    <div class="row">
+                    <ol id="playerNameListDisplay" class="col-6">
+                        <li><span class="playerNameText">Name:</span></li>
                     </ol>
+                    <ol id="playerScoreListDisplay" class="col-6">
+                        <li><span class="playerScoreText">Score:</span></li>
+                    </ol>
+                </div>
                 </div>
                 <foooter class="card-footer">
                     <button class="btn" id="closeScoresBtn">Return to Quiz</button>
