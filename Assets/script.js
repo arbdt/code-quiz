@@ -45,10 +45,12 @@ function playQuiz(){
 
     //while (isPlaying){
         interval = setInterval(function(){ // count each second
-            timeLeft -= 1;
-            timerDisplay.textContent = timeLeft; // display decremented time
-            console.log(timeLeft);
-            if (timeLeft == 0){ // stop timer if ran out of time
+            if (timeLeft > 0){ // if still have time to go
+                timeLeft -= 1;
+                timerDisplay.textContent = timeLeft; // display decremented time
+                console.log(timeLeft);
+            }
+            else if (timeLeft == 0){ // stop timer if ran out of time
                 clearInterval(interval); // clear any timers
                 console.log("time ended");
                 isPlaying = false; // no longer quizzing
@@ -59,6 +61,8 @@ function playQuiz(){
                 console.log("quiz ended");
                 endQuiz();
             }
+
+
         }, 1000);
         startButton.style="display:none"; // hide start button
         
@@ -175,7 +179,6 @@ function choseAnswer(){
         }
         else if (timeLeft == 0 || numQuestion == 5){
             isPlaying = false;
-            clearInterval();
         }
 }
 
