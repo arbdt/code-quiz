@@ -47,31 +47,29 @@ function playQuiz(){
     timeLeft= 75; //set max time remaining to begin
     timerDisplay.textContent = timeLeft; // display time remaining
 
-    //while (isPlaying){
-        interval = setInterval(function(){ // count each second
-            if (timeLeft > 0){ // if still have time to go
-                timeLeft -= 1;
-                timerDisplay.textContent = timeLeft; // display decremented time
-                console.log(timeLeft); //DEBUGGING: current time left
-            }
-            else if (timeLeft == 0){ // stop timer if ran out of time
-                clearInterval(interval); // clear any timers
-                console.log("time ended"); //DEBUGGING: Ended due to time constraint
-                isPlaying = false; // no longer quizzing
-                endQuiz();
-            }
-            if (!isPlaying){ // stop timer if finished quiz
-                clearInterval(interval); // clear any timers
-                console.log("quiz ended"); //DEBUGGING: Ended due to no more questions
-                endQuiz();
-            }
+     interval = setInterval(function(){ // count each second
+        if (timeLeft > 0){ // if still have time to go
+            timeLeft -= 1;
+            timerDisplay.textContent = timeLeft; // display decremented time
+            console.log(timeLeft); //DEBUGGING: current time left
+        }
+        else if (timeLeft == 0){ // stop timer if ran out of time
+            clearInterval(interval); // clear any timers
+            console.log("time ended"); //DEBUGGING: Ended due to time constraint
+            isPlaying = false; // no longer quizzing
+            endQuiz();
+        }
+        if (!isPlaying){ // stop timer if finished quiz
+            clearInterval(interval); // clear any timers
+            console.log("quiz ended"); //DEBUGGING: Ended due to no more questions
+            endQuiz();
+        }
 
-        }, 1000);
-        startButton.style="display:none"; // hide start button
+    }, 1000);
+    startButton.style="display:none"; // hide start button
         
-        //pose first question
-        poseQuestion(numQuestion);
-    //}
+    //pose first question
+    poseQuestion(numQuestion);
 }
 
 function poseQuestion(qnNumber){ //to show question and answers
@@ -97,9 +95,8 @@ function poseQuestion(qnNumber){ //to show question and answers
         quizOptions.children[i].style = "display: list-item"; // show answer list to user
         quizOptions.children[i].firstChild.textContent = answerPool[i]; // add answers to answer area list
         quizOptions.children[i].firstChild.addEventListener("click",choseAnswer); // functionality to select answer
-        console.log(answerPool[i]); // DEBUGGING: printing answer options to screen
-    }
-    
+        console.log(`Showing Question \#${qnNumber}`); // DEBUGGING: printing answer options to screen
+    } 
 }
 
 // for when answer clicked
@@ -118,7 +115,6 @@ function choseAnswer(){
             }
             else if (numQuestion == 1 && answerChosen.innerText != "Alerts"){
                 console.log(answerChosen.innerText);
-                console.log(answerChosen);
                 document.getElementById("qnResult").textContent = "Incorrect!";
                 timeLeft -= 15;
                 qnAnswered = true;
@@ -170,26 +166,22 @@ function choseAnswer(){
         }
         if (timeLeft < 0){ // try not let time go negative
             timeLeft = 0;
+            console.log("time negative");
         }
         if (qnAnswered && numQuestion < 5){
             numQuestion += 1; // move on to next question
             poseQuestion(numQuestion);
         }
-        else if (timeLeft == 0 || numQuestion == 5){ // stop quiz
+        else if (numQuestion == 5){ // stop quiz
+            console.log("Question limit triggered");
             isPlaying = false;
         }
-}
-
-
-// reset to defaults
-function restartQuiz(){
-
 }
 
 // ending and scoring
 function endQuiz(){
     quizQuestion.textContent = "Quiz concluded";
-    document.getElementById("qnResult").textContent = "To save your score, enter your name below.";
+    document.getElementById("qnResult").textContent = "To save your score, enter your name below. Reload the page to try again.";
     quizOptions.style = "display: none;";
     playerNameInput.style = "display: inline;";
     saveScoreButton.style = "display: inline; margin:auto;";
@@ -221,7 +213,6 @@ function saveScoring() { // save current user score
         //once saved, show score card
         showScoreCard();
     }
-
 }
 
 // show high scores pane
@@ -253,6 +244,7 @@ function hideScoreCard(){
     scoreCard.style = "display: none;";
     gameCard.style = "display: flex;";
     showScoresButton.style.visibility = "visible";
+    // remove items from score display so that they are displayed fresh and not repeated
     while (document.getElementById("playerNameListDisplay").children.length > 1){
         document.getElementById("playerNameListDisplay").lastElementChild.remove();
         document.getElementById("playerScoreListDisplay").lastElementChild.remove();
